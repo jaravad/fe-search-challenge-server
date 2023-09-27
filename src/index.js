@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 require('dotenv').config()
 
@@ -9,6 +10,14 @@ const PORT = process.env.PORT
 const DATABASE_URI = process.env.DATABASE_URI
 
 const app = express()
+
+const whitelist = ['http://localhost:3000']
+
+app.use(
+  cors({
+    origin: whitelist,
+  })
+)
 
 app.use('/api', itemsRouter)
 
