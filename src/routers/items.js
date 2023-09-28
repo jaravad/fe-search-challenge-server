@@ -6,13 +6,17 @@ const Specie = require('../models/specie')
 router.get('/items', async (req, res) => {
   try {
     const query = req.query.q
-    if (query === null) {
-      const data = await Specie.find()
-      return res.json(data)
+    const { skip, limit } = req.query
+    let filter
+    if (!query && query !== '') {
+      filter = {}
+    } else {
+      const regex = new RegExp(query, 'i')
+      filter = { name: regex }
     }
-    const regex = new RegExp(query, 'i')
-    const result = await Specie.find({ name: regex })
-    res.json(result)
+    const items = await Specie.find(filter).skip(skip).limit(limit)
+    const itemsCount = await Specie.countDocuments(filter)
+    res.json({ items, itemsCount })
   } catch (error) {
     console.log(error)
   }
