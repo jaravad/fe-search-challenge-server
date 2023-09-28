@@ -11,13 +11,7 @@ const DATABASE_URI = process.env.DATABASE_URI
 
 const app = express()
 
-const whitelist = ['http://localhost:3000']
-
-app.use(
-  cors({
-    origin: whitelist,
-  })
-)
+app.use(cors())
 
 app.use('/api', itemsRouter)
 
